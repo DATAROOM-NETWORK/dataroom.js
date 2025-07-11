@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags, Title, and Fonts -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dataroom.js Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- highlight.js Stylesheet (Atom One Dark Theme) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+  <!-- Page Styles -->
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 960px;
+      margin: 2em auto;
+      padding: 2em;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    article {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 2em;
+      margin-bottom: 2em;
+    }
+    article:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    h1, h2 {
+      padding-bottom: 0.5em;
+      color: orangered;
+    }
+    h3 {
+      color: #4a90e2;
+    }
+    p {
+      margin-bottom: 1em;
+    }
+    button {
+      font-family: "Fira Code", monospace;
+      margin-right: 1em;
+      padding: 0.6em 1em;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #f0f0f0;
+    }
+    pre code.hljs {
+      border-radius: 4px;
+      padding: 1.5em;
+      font-family: "Fira Code", monospace;
+    }
+    .demo-box {
+      border: 1px solid #ddd;
+      padding: 1.5em;
+      border-radius: 4px;
+      margin-top: 1em;
+      background: #fdfdfd;
+    }
+    #shared-logs {
+      background-color: #2d2d2d;
+      color: #f1f1f1;
+      padding: 1.5em;
+      margin-top: 1em;
+      max-height: 300px;
+      overflow-y: auto;
+      border-radius: 4px;
+      font-family: "Fira Code", monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <h1>dataroom.js</h1>
+    <p>Dataroom.js extends the CustomHTMLElement API with a few custom features for ease of use. </p>
+
+    <!-- ====================================================================== -->
+    <!-- Article 1: Extending DataroomElement                                   -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>1. Extending DataroomElement</h2>
+      <p>Create your own components by extending the base class. Override lifecycle methods like <code>initialize()</code> and <code>disconnect()</code> to add your own logic.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+// 1. Import the base class
+import DataroomElement from './src/index.js';
+
+// 2. Create your own class that extends it
+class ExtendingExample extends DataroomElement {
+  // 3. Override initialize() for setup logic
+  async initialize() {
+    this.log('Component is initializing!');
+    this.innerHTML = 'Hello from the initialize() method!';
+  }
+
+  // 4. Override disconnect() for cleanup logic
+  async disconnect() {
+    // This won't be visible on the page, but will fire if the element is removed
+    console.log('Component is disconnecting!');
+  }
+}
+
+// 5. Define the new custom element
+customElements.define('extending-example', ExtendingExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <extending-example></extending-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class ExtendingExample extends DataroomElement {
+          async initialize() { this.innerHTML = 'Hello from the initialize() method!'; }
+          async disconnect() { console.log('Component is disconnecting!'); }
+        }
+        customElements.define('extending-example', ExtendingExample);
+      </script>
+    </article>
+
+    <!-- ====================================================================== -->
+    <!-- Article 2: this.create()                                               -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>2. this.create()</h2>
+      <p>Dynamically create and append HTML elements within your component.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+import DataroomElement from './src/index.js';
+
+class CreateExample extends DataroomElement {
+  async initialize() {
+    const list = this.create('ul', { style: 'padding-left: 20px;' });
+    this.create('li', { content: 'First item' }, list);
+    this.create('li', { content: 'Second item' }, list);
+  }
+}
+customElements.define('create-example', CreateExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <create-example></create-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class CreateExample extends DataroomElement {
+          async initialize() {
+            const list = this.create('ul', { style: 'padding-left: 20px; margin: 0;' });
+            this.create('li', { content: 'First item, created dynamically.' }, list);
+            this.create('li', { content: 'Second item, also created dynamically.' }, list);
+          }
+        }
+        customElements.define('create-example', CreateExample);
+      </script>
+    </article>
+
+    <!-- ====================================================================== -->
+    <!-- Article 3: this.event() and this.on()                                  -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>3. this.event() and this.on()</h2>
+      <p>Fire and listen for custom events within your component.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+import DataroomElement from './src/index.js';
+
+class EventExample extends DataroomElement {
+  async initialize() {
+    const btn = this.create('button', { content: 'Click Me' });
+    btn.addEventListener('click', () => {
+      this.event('user-clicked', { time: new Date().toLocaleTimeString() });
+    });
+
+    this.on('user-clicked', (detail) => {
+      alert(`'user-clicked' event caught at ${detail.time}!`);
+    });
+  }
+}
+customElements.define('event-example', EventExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <event-example></event-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class EventExample extends DataroomElement {
+          async initialize() {
+            const btn = this.create('button', { content: 'Click Me' });
+            btn.addEventListener('click', () => {
+              this.event('user-clicked', { time: new Date().toLocaleTimeString() });
+            });
+            this.on('user-clicked', (detail) => {
+              alert(`'user-clicked' event caught at ${detail.time}!`);
+            });
+          }
+        }
+        customElements.define('event-example', EventExample);
+      </script>
+    </article>
+
+    <!-- ====================================================================== -->
+    <!-- Article 4: this.call()                                                 -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>4. this.call()</h2>
+      <p>A built-in helper for making <code>fetch</code> requests. This example fetches a todo item from a public API.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+import DataroomElement from './src/index.js';
+
+class CallExample extends DataroomElement {
+  async initialize() {
+    const btn = this.create('button', { content: 'Fetch Data' });
+    const resultEl = this.create('p', { content: 'Waiting for data...' });
+
+    btn.addEventListener('click', async () => {
+      resultEl.textContent = 'Loading...';
+      try {
+        const data = await this.call('https://jsonplaceholder.typicode.com/todos/1');
+        resultEl.textContent = `Fetched: "${data.title}"`;
+      } catch (e) {
+        resultEl.textContent = `Error: ${e.message}`;
+      }
+    });
+  }
+}
+customElements.define('call-example', CallExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <call-example></call-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class CallExample extends DataroomElement {
+          async initialize() {
+            const btn = this.create('button', { content: 'Fetch Data' });
+            const resultEl = this.create('p', { content: 'Click the button to fetch data.' });
+            btn.addEventListener('click', async () => {
+              resultEl.textContent = 'Loading...';
+              try {
+                const data = await this.call('https://jsonplaceholder.typicode.com/todos/1');
+                resultEl.textContent = `Fetched To-Do: "${data.title}"`;
+              } catch (e) {
+                resultEl.textContent = `Error: ${e.message}`;
+              }
+            });
+          }
+        }
+        customElements.define('call-example', CallExample);
+      </script>
+    </article>
+
+    <!-- ====================================================================== -->
+    <!-- Article 5: Attribute Observation                                       -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>5. Attribute Observation</h2>
+      <p>Components automatically listen for attribute changes and fire a <code>NODE-CHANGED</code> event. Click the button to change the <code>data-id</code> attribute on the component below.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+import DataroomElement from './src/index.js';
+
+class AttributeExample extends DataroomElement {
+  async initialize() {
+    this.on('NODE-CHANGED', (detail) => {
+      if (detail.attribute === 'data-id') {
+        this.textContent = `Attribute 'data-id' changed to: ${detail.newValue}`;
+      }
+    });
+  }
+}
+customElements.define('attribute-example', AttributeExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <button id="attr-change-btn">Change Attribute</button>
+        <attribute-example data-id="initial-value">
+          I'm waiting for an attribute change...
+        </attribute-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class AttributeExample extends DataroomElement {
+          async initialize() {
+            this.on('NODE-CHANGED', (detail) => {
+              if (detail.attribute === 'data-id') {
+                this.textContent = `Attribute 'data-id' changed to: "${detail.newValue}"`;
+              }
+            });
+          }
+        }
+        customElements.define('attribute-example', AttributeExample);
+
+        // External button to trigger the change
+        document.getElementById('attr-change-btn').addEventListener('click', () => {
+          const target = document.querySelector('attribute-example');
+          const newId = `val-${Math.floor(Math.random() * 1000)}`;
+          target.setAttribute('data-id', newId);
+        });
+      </script>
+    </article>
+
+  </main>
+
+  <!-- highlight.js Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    // Initialize highlighting on all code blocks
+    hljs.highlightAll();
+  </script>
+
+</body>
+</html>

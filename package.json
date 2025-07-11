@@ -1,0 +1,26 @@
+{
+  "name": "dataroom-js",
+  "version": "0.5.0",
+  "description": "The core component behind dataroom.js",
+  "main": "src/index.js",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DATAROOM-NETWORK/dataroom.js.git"
+  },
+  "keywords": [
+    "dataroom",
+    "web-components",
+    "data-visualization"
+  ],
+  "author": "Dataroom Network",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DATAROOM-NETWORK/dataroom.js/issues"
+  },
+  "homepage": "https://github.com/DATAROOM-NETWORK/dataroom.js#readme"
+}
