@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-npm install @dataroom/js
+npm install dataroom-js --save
 ```
 
 ## Basic Usage
