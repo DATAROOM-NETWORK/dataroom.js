@@ -7,7 +7,9 @@
   "files": [
     "src"
   ],
-  "scripts": {},
+  "scripts": {
+    "start":"npx live-server"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DATAROOM-NETWORK/dataroom.js.git"
