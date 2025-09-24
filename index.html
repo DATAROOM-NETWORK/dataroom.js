@@ -168,6 +168,14 @@
     <h1>dataroom.js</h1>
     <p>Dataroom.js extends the CustomHTMLElement API with a few custom features for ease of use. </p>
 
+    <p>Install dataroom.js from NPM:</p>
+
+    <article>
+      <pre class="shell">
+npm install dataroom-js
+      </pre>
+    </article>
+
     <!-- ====================================================================== -->
     <!-- Article 1: Extending DataroomElement                                   -->
     <!-- ====================================================================== -->
@@ -177,7 +185,10 @@
       <h3>Code Example:</h3>
       <pre><code class="language-javascript">
 // 1. Import the base class
-import DataroomElement from './src/index.js';
+import DataroomElement from 'dataroom-js';
+
+// you can also use a CDN:
+// import DataroomElement from 'https://unpkg.com/dataroom-js@0.7.5/src/index.js';
 
 // 2. Create your own class that extends it
 class ExtendingExample extends DataroomElement {
