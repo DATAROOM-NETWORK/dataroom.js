@@ -62,20 +62,37 @@ myComponent.addEventListener('my-event', (e) => {
 });
 ```
 
-### `on(name, cb)`
+### `on(name, cb)` and `once(name, cb)`
 
-Attaches an event listener to the component.
+Attaches an event listener to the component. `once` is a variant that fires the listener only one time.
 
-**Example:**
+**`on` Example:**
 
 ```javascript
 class MyComponent extends DataroomElement {
   async initialize() {
     this.on('my-event', (detail) => {
-      console.log(detail); // { foo: 'bar' }
+      console.log('This will be logged every time:', detail);
     });
 
     this.event('my-event', { foo: 'bar' });
+    this.event('my-event', { foo: 'baz' });
+  }
+}
+```
+
+**`once` Example:**
+
+```javascript
+class MyComponent extends DataroomElement {
+  async initialize() {
+    this.once('one-time-event', (detail) => {
+      console.log('This will only be logged once:', detail);
+    });
+
+    // Firing the event multiple times
+    this.event('one-time-event', { attempt: 1 });
+    this.event('one-time-event', { attempt: 2 });
   }
 }
 ```

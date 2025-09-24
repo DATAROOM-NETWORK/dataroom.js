@@ -64,10 +64,21 @@ export default class DataroomElement extends HTMLElement {
    * @returns {void}
    */
   on(name, cb){
-    console.log('creating event listener...', name);
     return this.addEventListener(name, (e)=>{
       cb(e.detail)
     });
+  }
+
+  /**
+   * Attaches an event listener that will be triggered only once.
+   * @param {string} name - The name of the event to listen for.
+   * @param {Function} cb - The callback function to execute when the event is fired.
+   * @returns {void}
+   */
+  once(name, cb){
+    return this.addEventListener(name, (e)=>{
+      cb(e.detail)
+    }, { once: true });
   }
 
   /**

@@ -171,24 +171,35 @@ customElements.define('create-example', CreateExample);
     </article>
 
     <!-- ====================================================================== -->
-    <!-- Article 3: this.event() and this.on()                                  -->
+    <!-- Article 3: this.event(), this.on(), and this.once()                    -->
     <!-- ====================================================================== -->
     <article>
-      <h2>3. this.event() and this.on()</h2>
-      <p>Fire and listen for custom events within your component.</p>
+      <h2>3. this.event(), this.on(), and this.once()</h2>
+      <p>Fire and listen for custom events within your component. <code>once</code> is a variation of <code>on</code> that only fires the event once.</p>
       <h3>Code Example:</h3>
       <pre><code class="language-javascript">
 import DataroomElement from './src/index.js';
 
 class EventExample extends DataroomElement {
   async initialize() {
-    const btn = this.create('button', { content: 'Click Me' });
-    btn.addEventListener('click', () => {
+    const onBtn = this.create('button', { content: 'Click Me (on)' });
+    onBtn.addEventListener('click', () => {
       this.event('user-clicked', { time: new Date().toLocaleTimeString() });
     });
 
     this.on('user-clicked', (detail) => {
       alert(`'user-clicked' event caught at ${detail.time}!`);
+    });
+
+    const onceBtn = this.create('button', { content: 'Click Me (once)' });
+    const status = this.create('p', { content: 'Waiting for one-time event...' });
+    onceBtn.addEventListener('click', () => {
+      this.event('one-time-event', { time: new Date().toLocaleTimeString() });
+    });
+
+    this.once('one-time-event', (detail) => {
+      status.textContent = `'one-time-event' caught at ${detail.time}. It won\'t fire again.`;
+      onceBtn.disabled = true;
     });
   }
 }
@@ -202,12 +213,25 @@ customElements.define('event-example', EventExample);
         import DataroomElement from './src/index.js';
         class EventExample extends DataroomElement {
           async initialize() {
-            const btn = this.create('button', { content: 'Click Me' });
-            btn.addEventListener('click', () => {
+            const onBtn = this.create('button', { content: 'Click Me (on)' });
+            onBtn.addEventListener('click', () => {
               this.event('user-clicked', { time: new Date().toLocaleTimeString() });
             });
+
             this.on('user-clicked', (detail) => {
               alert(`'user-clicked' event caught at ${detail.time}!`);
+            });
+
+            const onceBtn = this.create('button', { content: 'Click Me (once)' });
+            const status = this.create('p', { content: 'Waiting for one-time event...' });
+            onceBtn.addEventListener('click', () => {
+              this.event('one-time-event', { time: new Date().toLocaleTimeString() });
+            });
+
+            this.once('one-time-event', (detail) => {
+              status.textContent = `'one-time-event' caught at ${detail.time}. It won\'t fire again.`;
+              onceBtn.disabled = true;
+              onceBtn.style.cursor = 'not-allowed';
             });
           }
         }
