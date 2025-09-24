@@ -15,7 +15,7 @@ To use `DataroomElement`, you can either use it directly in your HTML or extend 
 ### Extending `DataroomElement`
 
 ```javascript
-import DataroomElement from '@dataroom/js';
+import DataroomElement from 'dataroom-js';
 
 class MyComponent extends DataroomElement {
   async initialize() {
