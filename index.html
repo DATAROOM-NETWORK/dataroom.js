@@ -293,10 +293,74 @@ customElements.define('call-example', CallExample);
     </article>
 
     <!-- ====================================================================== -->
-    <!-- Article 5: Attribute Observation                                       -->
+    <!-- Article 5: this.getJSON()                                              -->
     <!-- ====================================================================== -->
     <article>
-      <h2>5. Attribute Observation</h2>
+      <h2>5. this.getJSON()</h2>
+      <p>A utility for fetching and parsing a JSON file from a URL. It provides detailed error handling for common issues like network failures or malformed JSON.</p>
+      <h3>Code Example:</h3>
+      <pre><code class="language-javascript">
+import DataroomElement from './src/index.js';
+
+class GetJsonExample extends DataroomElement {
+  async initialize() {
+    const btn = this.create('button', { content: 'Fetch JSON Data' });
+    const resultEl = this.create('p', { content: 'Click the button to fetch.' });
+
+    // Create a dummy JSON file for the demo
+    const jsonData = { user: "Jane Doe", role: "Developer" };
+    const jsonBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+    const jsonUrl = URL.createObjectURL(jsonBlob);
+
+    btn.addEventListener('click', async () => {
+      resultEl.textContent = 'Loading...';
+      try {
+        const data = await this.getJSON(jsonUrl);
+        resultEl.textContent = `Fetched: User \"${data.user}\" has role \"${data.role}\".`;
+      } catch (e) {
+        resultEl.textContent = `Error: ${e.message}`;
+      }
+    });
+  }
+}
+customElements.define('get-json-example', GetJsonExample);
+      </code></pre>
+      <h3>Live Demo:</h3>
+      <div class="demo-box">
+        <get-json-example></get-json-example>
+      </div>
+      <script type="module">
+        import DataroomElement from './src/index.js';
+        class GetJsonExample extends DataroomElement {
+          async initialize() {
+            const btn = this.create('button', { content: 'Fetch JSON Data' });
+            const resultEl = this.create('p', { content: 'Click the button to fetch data.' });
+
+            // Create a dummy JSON file for the demo
+            const jsonData = { user: "Jane Doe", role: "Developer" };
+            const jsonBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+            const jsonUrl = URL.createObjectURL(jsonBlob);
+
+            btn.addEventListener('click', async () => {
+              resultEl.textContent = 'Loading...';
+              try {
+                const data = await this.getJSON(jsonUrl);
+                resultEl.textContent = `Fetched: User \"${data.user}\" has role \"${data.role}\".`;
+              } catch (e) {
+                resultEl.textContent = `Error: ${e.message}`;
+              }
+            });
+          }
+        }
+        customElements.define('get-json-example', GetJsonExample);
+      </script>
+    </article>
+
+    <!-- ====================================================================== -->
+    <!-- Article 6: Attribute Observation                                       -->
+    <!-- ====================================================================== -->
+    <article>
+      <h2>6. Attribute Observation</h2>
       <p>Components automatically listen for attribute changes and fire a <code>NODE-CHANGED</code> event. Click the button to change the <code>data-id</code> attribute on the component below.</p>
       <h3>Code Example:</h3>
       <pre><code class="language-javascript">

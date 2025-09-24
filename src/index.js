@@ -134,6 +134,33 @@ export default class DataroomElement extends HTMLElement {
   }
 
   /**
+   * Fetches a JSON file from the specified URL, parses it, and returns the resulting object.
+   * @param {string} url - The URL of the JSON file to fetch.
+   * @returns {Promise<object>} A promise that resolves with the parsed JSON object.
+   * @throws {Error} Throws detailed errors for network issues, non-OK HTTP responses, or JSON parsing failures.
+   */
+  async getJSON(url) {
+    this.log(`Fetching JSON from: ${url}`);
+    let response;
+    try {
+      response = await fetch(url);
+    } catch (error) {
+      throw new Error(`Network error while fetching JSON from ${url}: ${error.message}`);
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status} ${response.statusText} while fetching JSON from ${url}`);
+    }
+
+    try {
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error(`Failed to parse JSON from ${url}: ${error.message}`);
+    }
+  }
+
+  /**
    * Logs a message if the verbose flag is set.
    * @param {string} message - The message to log.
    * @returns {void}

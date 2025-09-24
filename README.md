@@ -129,6 +129,28 @@ Sets a timeout for the request in milliseconds.
 <my-component call-timeout="5000"></my-component>
 ```
 
+### `getJSON(url)`
+
+Fetches a JSON file from a URL, parses it, and returns it as a JavaScript object. It includes robust error handling for network issues, bad HTTP statuses, and JSON parsing errors.
+
+**Example:**
+
+```javascript
+class JsonComponent extends DataroomElement {
+  async initialize() {
+    try {
+      // Public APIs are great for examples
+      const data = await this.getJSON('https://jsonplaceholder.typicode.com/users/1');
+      this.log(`Fetched user: ${data.name}`);
+      this.innerHTML = `Hello, ${data.name}!`;
+    } catch (error) {
+      console.error(error);
+      this.innerHTML = `Failed to fetch data: ${error.message}`;
+    }
+  }
+}
+```
+
 ### `log(message)`
 
 Logs a message to the console if the `verbose` attribute is set.
